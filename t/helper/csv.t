@@ -318,7 +318,7 @@ $csv->parse;
 is_deeply $csv->get_data, undef, 'case insensitive header without flag ignores';
 
 #####
-my $csv = SL::Helper::Csv->new(
+$csv = SL::Helper::Csv->new(
   file    => \"Kaffee;1,50\nSchoke;0,89\n",
   header  => [
     [ 'datatype', 'description', 'sellprice' ],
@@ -333,7 +333,7 @@ ok $csv->_check_multiplexed, 'multiplex check works on not-multiplexed data';
 ok !$csv->is_multiplexed, 'not-multiplexed data is recognized';
 
 #####
-my $csv = SL::Helper::Csv->new(
+$csv = SL::Helper::Csv->new(
   file    => \"P;Kaffee;1,50\nC;Meier\n",
   header  => [
     [ 'datatype', 'description', 'listprice' ],
@@ -353,7 +353,7 @@ ok $csv->_check_multiplexed, 'multiplex check works on multiplexed data';
 ok $csv->is_multiplexed, 'multiplexed data is recognized';
 
 #####
-my $csv = SL::Helper::Csv->new(
+$csv = SL::Helper::Csv->new(
   file    => \"P;Kaffee;1,50\nC;Meier\n",
   header  => [
     [ 'datatype', 'description', 'listprice' ],
@@ -370,7 +370,7 @@ my $csv = SL::Helper::Csv->new(
 ok !$csv->_check_multiplexed, 'multiplex check works on multiplexed data an detects missing row_ident';
 
 #####
-my $csv = SL::Helper::Csv->new(
+$csv = SL::Helper::Csv->new(
   file    => \"P;Kaffee;1,50\nC;Meier\n",
   header  => [
     [ 'datatype', 'description', 'listprice' ],
@@ -388,7 +388,7 @@ $csv->parse;
 ok !$csv->_check_multiplexed, 'multiplex check works on multiplexed data an detects missing class';
 
 #####
-my $csv = SL::Helper::Csv->new(
+$csv = SL::Helper::Csv->new(
   file    => \"P;Kaffee;1,50\nC;Meier\n",  # " # make emacs happy
   header  => [
     [ 'datatype', 'description', 'listprice' ],
@@ -406,7 +406,7 @@ ok !$csv->_check_multiplexed, 'multiplex check works on multiplexed data an dete
 
 #####
 
-my $csv = SL::Helper::Csv->new(
+$csv = SL::Helper::Csv->new(
   file    => \"P;Kaffee;1,50\nC;Meier\n",  # " # make emacs happy
   header  => [
     [ 'datatype', 'description', 'listprice' ],
@@ -431,7 +431,7 @@ is $csv->get_objects->[1]->name,        'Meier',  'multiplex: second object';
 
 #####
 
-my $csv = SL::Helper::Csv->new(
+$csv = SL::Helper::Csv->new(
   file    => \"datatype;description;listprice\ndatatype;name\nP;Kaffee;1,50\nC;Meier\n",  # " # make emacs happy
   profile => [
     { profile   => { listprice => 'listprice_as_number' },
