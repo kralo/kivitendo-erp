@@ -16,7 +16,7 @@ use parent qw(Rose::Object);
 use Rose::Object::MakeMethods::Generic
 (
  scalar                  => [ qw(controller file csv test_run save_with_cascade) ],
- 'scalar --get_set_init' => [ qw(profile displayable_columns existing_objects class manager_class cvar_columns all_cvar_configs all_languages payment_terms_by all_vc vc_by) ],
+ 'scalar --get_set_init' => [ qw(is_multiplexed profile displayable_columns existing_objects class manager_class cvar_columns all_cvar_configs all_languages payment_terms_by all_vc vc_by) ],
 );
 
 sub run {
@@ -61,7 +61,6 @@ sub run {
   $self->controller->info_headers({ used => { }, headers => [ ] });
 
   my @objects  = $self->csv->get_objects;
-
   $self->controller->track_progress(progress => 70);
 
   my @raw_data = @{ $self->csv->get_data };
@@ -289,6 +288,12 @@ sub init_manager_class {
 
   $self->class =~ m/^SL::DB::(.+)/;
   $self->manager_class("SL::DB::Manager::" . $1);
+}
+
+sub init_is_multiplexed {
+  my ($self) = @_;
+
+  $self->is_multiplexed('ARRAY' eq ref ($self->class) && scalar @{ $self->class } > 1);
 }
 
 sub check_objects {
