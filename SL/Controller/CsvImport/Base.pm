@@ -396,7 +396,10 @@ sub save_objects {
 
     my $object = $entry->{object_to_save} || $entry->{object};
 
-    if ( !$object->save(cascade => !!$self->save_with_cascade()) ) {
+    my $ret = eval {$object->save(cascade => !!$self->save_with_cascade())};
+    if ( $@ ) {
+      push @{ $entry->{errors} }, $::locale->text('Error when saving: #1', $@);
+    } elsif ( !$ret ) {
       push @{ $entry->{errors} }, $::locale->text('Error when saving: #1', $entry->{object}->db->error);
     } else {
       $self->controller->num_imported($self->controller->num_imported + 1);
